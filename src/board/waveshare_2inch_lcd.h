@@ -12,7 +12,7 @@
         #endif
 
         #if !defined(GPIO_TFT_BACKLIGHT)
-            #define GPIO_TFT_BACKLIGHT 24
+            #define GPIO_TFT_BACKLIGHT 18
         #endif
 
         #if !defined(GPIO_TFT_RESET_PIN)
