@@ -96,6 +96,7 @@ void ProgramInterruptHandler(int signal)
 
 int main()
 {
+  printf("Start...\n");  
   signal(SIGINT, ProgramInterruptHandler);
   signal(SIGQUIT, ProgramInterruptHandler);
   signal(SIGUSR1, ProgramInterruptHandler);

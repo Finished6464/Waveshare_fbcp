@@ -9,6 +9,7 @@
 
 void InitST7789()
 {
+  printf("Init ST7789....\n");
   // If a Reset pin is defined, toggle it briefly high->low->high to enable the device. Some devices do not have a reset pin, in which case compile with GPIO_TFT_RESET_PIN left undefined.
 #if defined(GPIO_TFT_RESET_PIN) && GPIO_TFT_RESET_PIN >= 0
   printf("Resetting display at reset GPIO pin %d\n", GPIO_TFT_RESET_PIN);
@@ -113,7 +114,7 @@ void InitST7789()
     SPI_TRANSFER(0xB1 /*FRMCTR1:Frame Rate Control*/, /*RTNA=*/6, /*FPA=*/1, /*BPA=*/1); // This should set frame rate = 99.67 Hz
 #endif
 
-    SPI_TRANSFER(/*Display ON*/ 0x29);
+    // SPI_TRANSFER(/*Display ON*/ 0x29);
     usleep(100 * 1000);
 #if defined(WAVESHARE_1INCH14_LCD)
     SPI_TRANSFER(0xc0, 0x2c);
@@ -152,7 +153,12 @@ void InitST7789()
 #endif
 
     ClearScreen();
-  
+
+    //opening after clearing to avoid snowflake screen
+    //https://blog.csdn.net/hexiaolong2009/article/details/79190789
+    usleep(100 * 1000);
+    SPI_TRANSFER(/*Display ON*/ 0x29);
+    usleep(100 * 1000);
   }
 #ifndef USE_DMA_TRANSFERS // For DMA transfers, keep SPI CS & TA active.
   END_SPI_COMMUNICATION();
@@ -165,6 +171,7 @@ void InitST7789()
 
 void TurnDisplayOff()
 {
+  printf("Turning display OFF...\n");
 #if defined(GPIO_TFT_BACKLIGHT) && defined(BACKLIGHT_CONTROL)
   SET_GPIO_MODE(GPIO_TFT_BACKLIGHT, 0x01); // Set backlight pin to digital 0/1 output mode (0x01) in case it had been PWM controlled
   CLEAR_GPIO(GPIO_TFT_BACKLIGHT);          // And turn the backlight off.
@@ -175,11 +182,12 @@ void TurnDisplayOff()
 
   usleep(120*1000); // Sleep off can be sent 120msecs after entering sleep mode the earliest, so synchronously sleep here for that duration to be safe.
 #endif
-  //  printf("Turned display OFF\n");
+  printf("Display OFF\n");
 }
 
 void TurnDisplayOn()
 {
+  printf("Turning display ON...\n");
 #if 0
   QUEUE_SPI_TRANSFER(0x11/*Sleep Out*/);
   usleep(120 * 1000);
@@ -189,7 +197,7 @@ void TurnDisplayOn()
   SET_GPIO_MODE(GPIO_TFT_BACKLIGHT, 0x01); // Set backlight pin to digital 0/1 output mode (0x01) in case it had been PWM controlled
   SET_GPIO(GPIO_TFT_BACKLIGHT);            // And turn the backlight on.
 #endif
-  //  printf("Turned display ON\n");
+  printf("Display ON\n");
 }
 
 void DeinitSPIDisplay()
