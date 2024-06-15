@@ -146,13 +146,11 @@ void InitST7789()
     usleep(100 * 1000);
 #endif
 
-#if defined(GPIO_TFT_BACKLIGHT) && defined(BACKLIGHT_CONTROL)
+#if defined(GPIO_TFT_BACKLIGHT)
     printf("Setting TFT backlight on at pin %d\n", GPIO_TFT_BACKLIGHT);
     SET_GPIO_MODE(GPIO_TFT_BACKLIGHT, 0x01); // Set backlight pin to digital 0/1 output mode (0x01) in case it had been PWM controlled
     SET_GPIO(GPIO_TFT_BACKLIGHT);            // And turn the backlight on.
 #endif
-
-    ClearScreen();
 
     //opening after clearing to avoid snowflake screen
     //https://blog.csdn.net/hexiaolong2009/article/details/79190789
