@@ -152,6 +152,7 @@ void InitST7789()
     SET_GPIO(GPIO_TFT_BACKLIGHT);            // And turn the backlight on.
 #endif
 
+    ClearScreen();
     //opening after clearing to avoid snowflake screen
     //https://blog.csdn.net/hexiaolong2009/article/details/79190789
     usleep(100 * 1000);
